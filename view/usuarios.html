@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Tarefas</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-dark text-white">
+    <div class="container mt-5">
+      <h1 class="text-center mb-4">Lista de Tarefas</h1>
+
+      <ul id="lista-tarefas" class="list-group mb-3">
+
+      </ul>
+
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          id="nova-tarefa"
+          class="form-control"
+          placeholder="Digite uma nova tarefa"
+        />
+        <button class="btn btn-primary" onclick="adicionarTarefa()">Adicionar Tarefa</button>
+      </div>
+    </div>
+
+    <script>
+      const tarefas = [
+        { id: 1, descricao: "Estudar sobre MVC" },
+        { id: 2, descricao: "Fazer o trabalho de matemática" },
+        { id: 3, descricao: "Enviar relatório semanal" },
+      ];
+
+      function renderizarTarefas() {
+        const lista = document.getElementById("lista-tarefas");
+        lista.innerHTML = "";
+        tarefas.forEach((tarefa) => {
+          const item = document.createElement("li");
+          item.className =
+            "list-group-item bg-secondary text-white d-flex justify-content-between align-items-center";
+          item.innerHTML = `
+            ${tarefa.descricao}
+            <button class="btn btn-danger btn-sm" onclick="removerTarefa(${tarefa.id})">Remover</button>
+          `;
+          lista.appendChild(item);
+        });
+      }
+
+      function adicionarTarefa() {
+        const input = document.getElementById("nova-tarefa");
+        const descricao = input.value.trim();
+        if (descricao !== "") {
+          const novaTarefa = {
+            id: Date.now(),
+            descricao,
+          };
+          tarefas.push(novaTarefa);
+          input.value = "";
+          renderizarTarefas();
+        }
+      }
+
+      function removerTarefa(id) {
+        const index = tarefas.findIndex((t) => t.id === id);
+        if (index !== -1) {
+          tarefas.splice(index, 1);
+          renderizarTarefas();
+        }
+      }
+
+      renderizarTarefas();
+    </script>
+  </body>
+</html>
